@@ -1,0 +1,52 @@
+# Receita de CI/CD da Loja (S-0260) -- lida pela Tilt, nunca escrita por IA.
+# Etapas sem `depende_de` comecam JUNTAS, em maquinas diferentes.
+
+[cartucho]
+id     = "demo-loja"
+nome   = "Loja -- backend Rust, frontend TypeScript"
+versao = "1.0.0"
+modo   = "pipeline"
+
+[mapreduce]
+split  = { tipo = "none" }
+reduce = { tipo = "manifest" }
+
+[recursos]
+memory_max_mb = 2048
+deadline_secs = 1800
+
+[entrada]
+extensoes         = [".toml"]
+max_arquivos      = 1
+max_arquivo_bytes = 1048576
+max_lote_bytes    = 1048576
+
+[[pipeline.etapa]]
+nome       = "build-backend"
+tool       = "container"
+acao       = "build"
+dockerfile = "backend/Dockerfile"
+contexto   = "backend"
+
+[[pipeline.etapa]]
+nome       = "build-frontend"
+tool       = "container"
+acao       = "build"
+dockerfile = "frontend/Dockerfile"
+contexto   = "frontend"
+
+[[pipeline.etapa]]
+nome       = "teste-backend"
+depende_de = ["build-backend"]
+tool       = "container"
+acao       = "run"
+imagem_de  = "build-backend"
+comando    = ["/app/loja-api", "--auto-teste"]
+
+[[pipeline.etapa]]
+nome       = "teste-frontend"
+depende_de = ["build-frontend"]
+tool       = "container"
+acao       = "run"
+imagem_de  = "build-frontend"
+comando    = ["node", "/app/testes.mjs"]
