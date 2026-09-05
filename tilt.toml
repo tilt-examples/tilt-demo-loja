@@ -70,5 +70,6 @@ acao       = "serve"
 imagem_de  = "build-frontend"
 porta      = 80
 saude      = "/"
-destino    = "grade"
+url        = "http://212.28.186.240"
+destino    = { maquina = "Tilt 04" }
 estrategia = "substituir"
