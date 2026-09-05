@@ -1,5 +1,6 @@
 # Receita de CI/CD da Loja (S-0260) -- lida pela Tilt, nunca escrita por IA.
 # Etapas sem `depende_de` comecam JUNTAS, em maquinas diferentes.
+# `titulo` e `descricao` sao o que a tela mostra -- o nome e o identificador.
 
 [cartucho]
 id     = "demo-loja"
@@ -23,6 +24,8 @@ max_lote_bytes    = 1048576
 
 [[pipeline.etapa]]
 nome       = "build-backend"
+titulo     = "Compilar o backend (Rust)"
+descricao  = "Constrói a imagem da API da loja com cargo, em dois estágios."
 tool       = "container"
 acao       = "build"
 dockerfile = "backend/Dockerfile"
@@ -30,6 +33,8 @@ contexto   = "backend"
 
 [[pipeline.etapa]]
 nome       = "build-frontend"
+titulo     = "Montar o frontend (TypeScript)"
+descricao  = "Gera o bundle do carrinho e a imagem Node que o serve."
 tool       = "container"
 acao       = "build"
 dockerfile = "frontend/Dockerfile"
@@ -37,6 +42,8 @@ contexto   = "frontend"
 
 [[pipeline.etapa]]
 nome       = "teste-backend"
+titulo     = "Testar a API"
+descricao  = "Roda o auto-teste da API dentro da imagem recém-construída."
 depende_de = ["build-backend"]
 tool       = "container"
 acao       = "run"
@@ -45,6 +52,8 @@ comando    = ["/app/loja-api", "--auto-teste"]
 
 [[pipeline.etapa]]
 nome       = "teste-frontend"
+titulo     = "Testar o carrinho"
+descricao  = "Executa os testes do carrinho de compras na imagem do frontend."
 depende_de = ["build-frontend"]
 tool       = "container"
 acao       = "run"
