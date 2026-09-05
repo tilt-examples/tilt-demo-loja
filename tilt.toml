@@ -59,3 +59,16 @@ tool       = "container"
 acao       = "run"
 imagem_de  = "build-frontend"
 comando    = ["node", "/app/testes.mjs"]
+
+[[pipeline.etapa]]
+nome       = "publicar"
+titulo     = "Publicar a loja"
+descricao  = "Sobe a loja numa máquina da grade e confere se responde."
+depende_de = ["teste-backend", "teste-frontend"]
+tool       = "container"
+acao       = "serve"
+imagem_de  = "build-frontend"
+porta      = 80
+saude      = "/"
+destino    = "grade"
+estrategia = "substituir"
