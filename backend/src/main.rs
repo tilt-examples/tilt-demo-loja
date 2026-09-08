@@ -15,6 +15,7 @@ fn catalogo() -> Vec<Produto> {
         Produto { sku: "CAM-01".into(), nome: "Camiseta".into(), preco_centavos: 5990 },
         Produto { sku: "CAN-02".into(), nome: "Caneca".into(), preco_centavos: 3450 },
         Produto { sku: "BON-03".into(), nome: "Bone".into(), preco_centavos: 7900 },
+        Produto { sku: "MOC-04".into(), nome: "Mochila".into(), preco_centavos: 12900 },
     ]
 }
 
@@ -42,6 +43,7 @@ fn auto_teste() -> i32 {
         ("uma camiseta", vec![("CAM-01".into(), 1)], 5990),
         ("duas canecas e um bone", vec![("CAN-02".into(), 2), ("BON-03".into(), 1)], 14800),
         ("sku inexistente vale zero", vec![("XXX-99".into(), 3)], 0),
+        ("uma mochila", vec![("MOC-04".into(), 1)], 12900),
     ];
     for (nome, itens, esperado) in casos {
         let obtido = total(&itens);
@@ -52,8 +54,8 @@ fn auto_teste() -> i32 {
             falhas += 1;
         }
     }
-    if catalogo().len() != 3 {
-        println!("FALHA catalogo: esperava 3 produtos");
+    if catalogo().len() != 4 {
+        println!("FALHA catalogo: esperava 4 produtos");
         falhas += 1;
     }
     falhas
