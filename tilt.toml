@@ -24,7 +24,7 @@ max_lote_bytes    = 1048576
 
 # Um push em `main` dispara a rodada pelo webhook do GitHub (S-0265). Sem isto, so "rode agora" e a API.
 [pipeline]
-gatilho = { push = "main" }
+gatilho = { push = 123 }
 
 [[pipeline.etapa]]
 nome       = "build-backend"
