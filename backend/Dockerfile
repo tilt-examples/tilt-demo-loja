@@ -1,7 +1,9 @@
 # Duas fases: compila com a toolchain inteira, roda numa imagem minima.
-FROM docker.io/library/rust:1.82-slim AS builder
+FROM docker.io/library/rust:1.85-slim AS builder
 WORKDIR /src
-COPY Cargo.toml ./
+# O Cargo.lock fixa as versões: sem ele, cada build resolvia as mais novas do dia, e em 29/09 o
+# hyper-util 0.1.21 passou a pedir edition 2024 (Rust 1.85) e o build quebrou sem mudança nossa.
+COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 RUN cargo build --release
 
